@@ -432,7 +432,7 @@
 
     regprobs=matrix(0,nrow=length(q),ncol=length(starts))
     for(j in 1:length(starts)){
-      regprobs[,j]=rowSums(samplemat[,(s*(j-1)*2+1):(s*(2*j))])
+      regprobs[,j]=rowSums(samplemat[, (s*(j-1)*2+1):(s*(2*j)), drop = FALSE])
     }
     regprob=rowSums(regprobs)
     mot=q*0
@@ -532,7 +532,7 @@
       if(verbosity>=3) print(paste("Updating Motif",j,"counts"))
       scoremat=scorematset[starts[j]:ends[j],]
       tempregs=whichregs[whichmot==j]
-      newbackground[j,]=colSums(bg2[whichregs[whichmot==j],])
+      newbackground[j,]=colSums(bg2[whichregs[whichmot==j],,drop = FALSE])
 
       if(verbosity>=3) print(newbackground[j,])
       tempstarts=whichpos[whichmot==j]
@@ -541,7 +541,7 @@
       ourseqs=matrix(nrow=length(tempregs),ncol=nrow(scoremat)+50)
       sampleseqs=seqs[tempregs]
       v=substring(sampleseqs,tempstarts-25,tempends+25)
-
+      #browser()
       for(i in 1:length(v)) if(tempstarts[i]<=25){
         v[i]=paste(c(rep("5",25-tempstarts[i]+1),v[i]),collapse="")
       }
@@ -801,7 +801,7 @@
     }
     }
 
-    # determine if convergence critera has been met
+    # determine if convergence criteria has been met
     if(nrow(alphas)>conv_n &
        var(tail(alphas,conv_n)) < conv_t){
       break
@@ -812,7 +812,24 @@
 
   if(verbosity>=1) print(proc.time() - starttime)
 
-  z2 <- list(seqs=origseqs,alphas=alphas,beststrand=beststrand, trimmedseqs=fullseqs,prior=prior,alpha=alpha,bindmat=bindmatset,scoremat=scorematset,scorematdim=dimvec,regprob=regprob,regprobs=regprobs,bestmatch=bestpos,whichregs=whichregs,whichpos=whichpos,background=qvec,whichmot=whichmot, whichstrand=strand,seed=as.integer(seed))
+  z2 <- list(seqs=origseqs,
+             alphas=alphas,
+             beststrand=beststrand,
+             trimmedseqs=fullseqs,
+             prior=prior,
+             alpha=alpha,
+             bindmat=bindmatset,
+             scoremat=scorematset,
+             scorematdim=dimvec,
+             regprob=regprob,
+             regprobs=regprobs,
+             bestmatch=bestpos,
+             whichregs=whichregs,
+             whichpos=whichpos,
+             background=qvec,
+             whichmot=whichmot,
+             whichstrand=strand,
+             seed=as.integer(seed))
 
   if(dt==T){
     dt_all <- data.table(regprob = c(z2$regprobs),
