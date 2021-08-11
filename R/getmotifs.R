@@ -532,7 +532,7 @@
       if(verbosity>=3) print(paste("Updating Motif",j,"counts"))
       scoremat=scorematset[starts[j]:ends[j],]
       tempregs=whichregs[whichmot==j]
-      newbackground[j,]=colSums(bg2[whichregs[whichmot==j],,drop = FALSE])
+      newbackground[j,]=colSums(bg2[whichregs[whichmot==j], , drop = FALSE])
 
       if(verbosity>=3) print(newbackground[j,])
       tempstarts=whichpos[whichmot==j]
@@ -553,7 +553,7 @@
       ######have subsequences
       for(k in 1:(nrow(scoremat)+50)) ourseqs[,k]=as.double(substring(v,k,k))
 
-      ourseqs2=ourseqs[,ncol(ourseqs):1]
+      ourseqs2=ourseqs[,ncol(ourseqs):1,drop = FALSE]
       ourseqs2=5-ourseqs2
       ourseqs2[ourseqs2==0]=5
       ourseqs[tempstrand==0,]=ourseqs2[tempstrand==0,]
