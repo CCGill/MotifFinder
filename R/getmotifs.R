@@ -564,12 +564,14 @@
       ####enables us to sample a new motif in a relatively "principled" manner
 
       if(verbosity>=3) print("Building background model...")
-      newtemp=16*(ourseqs[,1:(ncol(ourseqs)-2)]-1)+4*(ourseqs[,2:(ncol(ourseqs)-1)]-1)+(ourseqs[,3:(ncol(ourseqs)-0)]-1)
-      newtemp[ourseqs[,1:(ncol(ourseqs)-2)]==5]=-1
-      newtemp[ourseqs[,2:(ncol(ourseqs)-1)]==5]=-1
-      newtemp[ourseqs[,3:(ncol(ourseqs)-0)]==5]=-1
+      newtemp=16*(ourseqs[,1:(ncol(ourseqs)-2), drop = FALSE]-1)+4*(ourseqs[,2:(ncol(ourseqs)-1), drop = FALSE]-1)+(ourseqs[,3:(ncol(ourseqs)-0), drop = FALSE]-1)
+      newtemp[ourseqs[,1:(ncol(ourseqs)-2), drop = FALSE]==5]=-1
+      newtemp[ourseqs[,2:(ncol(ourseqs)-1), drop = FALSE]==5]=-1
+      newtemp[ourseqs[,3:(ncol(ourseqs)-0), drop = FALSE]==5]=-1
       newtemp=newtemp+1
+
       motcounts=matrix(ncol=ncol(newtemp),nrow=64)
+
       for(i in 1:64) motcounts[i,]=colSums(newtemp==i)
       if(verbosity>=3) print("...done")
 
