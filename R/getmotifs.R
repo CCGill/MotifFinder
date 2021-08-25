@@ -540,8 +540,21 @@
       tempstrand=whichstrand[whichmot==j]
       ourseqs=matrix(nrow=length(tempregs),ncol=nrow(scoremat)+50)
       sampleseqs=seqs[tempregs]
-      v=substring(sampleseqs,tempstarts-25,tempends+25)
+      v=substring(sampleseqs,tempstarts-25,tempends+25)  # reused variable name...
       #browser()
+
+      ## sometimes v has length 0 and tempstarts has length 0... tempregs is integer vector of length 0
+      ##ourseqs has 0 rows, whichmot = num(0) = whichstrand,  whichregs = int(0), mot has range 0,0.
+      ## catch this with the following exit point.
+      if(length(v) == 0 ){
+        message("No Motif found, Exiting")
+        return(list(completed = FALSE,
+                    dt = data.table(regprobs = c(regprobs),
+                                    sequence = rep(names(origseqs),ncol(regprobs))
+                                    )
+                    )
+               )
+      }
       for(i in 1:length(v)) if(tempstarts[i]<=25){
         v[i]=paste(c(rep("5",25-tempstarts[i]+1),v[i]),collapse="")
       }
@@ -845,6 +858,8 @@
 
     z2$dt <- merge(dt_all, dt_regulated, by=c("sequence","whichmotif"), all.x=T)
   }
+
+  z2$completed = TRUE
 
   return(z2)
 
