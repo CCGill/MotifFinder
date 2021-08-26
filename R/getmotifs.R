@@ -549,7 +549,7 @@
       if(length(v) == 0 ){
         message("No Motif found, Exiting")
         return(list(completed = FALSE,
-                    dt = data.table(regprobs = c(regprobs),
+                    dt = data.table(regprob = c(regprobs),
                                     sequence = rep(names(origseqs),ncol(regprobs))
                                     )
                     )
